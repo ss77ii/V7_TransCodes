@@ -53,7 +53,7 @@ void intake_control_fn(void* param)
 {
 	int buttonStateR2 = 0; // 0 = not pressed
 	int intakeState = 0; // 0 = retracted
-	int speed = 110;
+	int speed = 127;
 	int buttonStateXY = '0';
 	while(true)
     {

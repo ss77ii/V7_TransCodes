@@ -93,10 +93,10 @@ using namespace pros;
 * ARM related definitions
 /*********************************************************/
 
-#define PRESS_BRIDGE 380
-#define RELEASE_BRIDGE 740
-#define MAX_TOP 1000
-#define CARRY_GOAL 250
+#define PRESS_BRIDGE 270
+#define RELEASE_BRIDGE 400
+#define MAX_TOP 600
+#define CARRY_GOAL 150
 
 struct Hardware
 {
