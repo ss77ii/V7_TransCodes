@@ -777,8 +777,8 @@ void right_side()
 	clawAction_1 = {0, false, 1};
 	hookAction_1 = {0, false, 1};
 	transmission_piston.set_value(false);
-
 	top_piston.set_value(true);
+
 	clawAction_1 = {1050, true, 1};
 	goStraightCmPID_lib(100, 90, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
 	goStraightCmPID_lib(70, 70, 127, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 15000, 1, hardwareParameter);
@@ -797,6 +797,25 @@ void right_side()
 	goStraightCmPID_lib(110, 180, 127, MOVE_BACKWARD, 0.9, 0, 0.5, 1, 0, 0, 1500, 1, hardwareParameter);
 	goStraightCm_Back_Vision(30, 180, 100, DETECT_BLUE_GOAL_SIG, back_vision, 0.5, 0, 1, 0.5, 0, 5, 0.5, 0, 5, 1200, 1, hardwareParameter);
 	hookAction_1 = {0, true, 1};
+}
+
+void left_side()
+{
+	long start_time = pros::millis();
+	int intake_speed = 120;
+	sys_initial_to_auton_drifting = inertial_sensor.get_rotation();
+	sys_initial_robot_heading = 85;
+
+	clawAction_1 = {0, false, 1};
+	hookAction_1 = {0, false, 1};
+	transmission_piston.set_value(false);
+	top_piston.set_value(true);
+
+	clawAction_1 = {1150, true, 1};
+	goStraightCmPID_lib(105, 85, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
+	goStraightCmPID_lib(90, 75, 127, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 15000, 1, hardwareParameter);
+	turnDegreesPID_lib(180, ON_SPOT_TURN, 100, COUNTER_CLOCKWISE, 6, 0, 0.1, 1200, 2, hardwareParameter);
+	goStraightCmPID_lib(30, 180, 70, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 15000, 1, hardwareParameter);
 }
 
 /**************************
@@ -839,7 +858,8 @@ void autonomous()
 	***********************************************/
 
 	// auton_60s_skills_bridge_version();
-	right_side();
+	// right_side();
+	left_side();
 
 	waitForTouch();
 }
