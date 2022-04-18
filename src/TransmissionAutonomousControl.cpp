@@ -300,7 +300,7 @@ void auton_60s_skills_bridge_version(){
 ///////catch first yellow goal
 	clawAction_1 = {0, true, 1};
 	delay(200);
-	armAction_1 = {127, 200, RELEASE_BRIDGE, 1};
+	armAction_1 = {127, 200, MAX_TOP, 1};
 	intakeAction_1 = {intake_speed, 200, 0, intake_speed, 1};
 delay(500);
 
