@@ -308,10 +308,8 @@ void auton_60s_skills_bridge_version()
 	delay(hook_action_delay_time);
 	//	intakeAction_1 = {100, 500, 0, 100, 1};
 	goStraightCmPID_lib(65, 82, 127, MOVE_FORWARD, 1.5, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter); // 100,80,127
-	goStraightCm_Front_Vision(65, 80, 100, DETECT_YELLOW_GOAL_SIG, front_vision,
+	goStraightCm_Front_Vision_limit_switch(65, 80, 100, DETECT_YELLOW_GOAL_SIG, front_vision,
 							  0.4, 0, 1.5, 0.3, 0, 10, 0.8, 0, 0, 1500, 1, hardwareParameter);
-
-	angle = get_robot_heading_lib(hardwareParameter);
 	intakeAction_1 = {0, 0, 0, 0, 1};
 	//	goStraightCmPID_lib_limit_switch(20, angle, 60, MOVE_FORWARD, 1.5, 0, 1.5, 0.8, 0, 0, 600, 1, hardwareParameter);
 
@@ -319,6 +317,8 @@ void auton_60s_skills_bridge_version()
 	clawAction_1 = {0, true, 1};
 	delay(200);
 	armAction_1 = {127, 200, MAX_TOP, 1};
+
+
 	intakeAction_1 = {intake_speed, 200, 0, intake_speed, 1};
 	delay(500);
 
@@ -888,13 +888,13 @@ void autonomous()
 
 	// test();
 	// test_vision();
-	right_side();
+	//right_side();
 	// right_side_blue();
 	// left_side_red();
 	// left_side_blue();
 	// mid_goal_red();
 	// mid_goal_blue();
-	// auton_60s_skills_bridge_version();
+	 auton_60s_skills_bridge_version();
 	// winpoint();
 	// finals_left_red();
 	// finals_left_blue();

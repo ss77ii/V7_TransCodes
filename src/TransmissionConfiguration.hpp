@@ -43,6 +43,8 @@ using namespace pros;
 #define INTAKE_MOTOR_PORT 17
 #define ARM_MOTOR_PORT 19
 
+#define EXTENDER_PORT 13
+
 
 #define INERTIAL_SENSOR_PORT 9
 
@@ -58,7 +60,8 @@ using namespace pros;
 #define PNEUMATIC_TRANSMISSION_PORT 'D'
 #define PNEUMATIC_TOP_PORT 'G'
 #define TOUCH_SENSOR_PORT 'H'
-//#define LIMIT_SWITCH_PORT 'H'
+
+#define LIMIT_SWITCH_PORT 'A'
 
 ///////////////////////////////////////////
 #define MOVE_FORWARD 1
@@ -113,6 +116,7 @@ struct Hardware
     pros::ADIDigitalOut backPistonLib2;
     pros::ADIDigitalOut transmissionPistonLib;
     pros::Imu inertialSensorLib;
+    pros::ADIDigitalIn limit_switch;
     pros::ADIEncoder Y_encoderLib;
 };
 
@@ -340,6 +344,17 @@ double get_distance_front_vision(Vision vision_sensor, int goal_color_signature,
 void balance_bridge_PID_lib(int maxPower, double target_pitch, double balance_KP, double balance_KI, double balance_KD,
                             long timeoutMili, int exitConditionExpectedPasses, Hardware robot);
 
+
+void goStraightCmPID_lib_limit_switch(double cmDistance, double robotHeadingLib, int maxPower, int robotDirection, double headingKP,
+                         double headingKI, double headingKD, double distanceKP, double distanceKI, double distanceKD,
+                         long timeoutMili, int exitConditionExpectedPasses, Hardware robot);
+
+void goStraightCm_Front_Vision_limit_switch(double cmDistance, double robotInertialHeadingLib, int maxSpeed,
+                               int goal_color_signature, Vision vision_sensor,
+                               double headingKP, double headingKI, double headingKD,
+                               double distanceKP, double distanceKI, double distanceKD,
+                               double visionKP, double visionKI, double visionKD,
+                               long timeoutMili, int exitConditionExpectedPasses, Hardware robot);
 
 detected_vision_goal_lib get_goal_object_front_vision(int goal_color_signature);
 
