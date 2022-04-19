@@ -15,7 +15,7 @@ pros::Motor left_back_motor(LEFT_BACK_DRIVE_MOTOR_PORT, pros::E_MOTOR_GEARSET_18
 pros::Motor right_front_motor(RIGHT_FRONT_DRIVE_MOTOR_PORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_DEGREES);
 pros::Motor right_mid_motor(RIGHT_MID_DRIVE_MOTOR_PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
 pros::Motor right_back_motor(RIGHT_BACK_DRIVE_MOTOR_PORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_DEGREES);
-pros::Motor intake_motor(INTAKE_MOTOR_PORT, pros::E_MOTOR_GEARSET_06, true, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor intake_motor(INTAKE_MOTOR_PORT, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES);
 pros::Motor arm_motor(ARM_MOTOR_PORT, pros::E_MOTOR_GEARSET_36, true, pros::E_MOTOR_ENCODER_DEGREES);
 
 pros::Imu inertial_sensor(INERTIAL_SENSOR_PORT);
