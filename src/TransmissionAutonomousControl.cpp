@@ -814,6 +814,47 @@ void right_side()
 	goStraightCmPID_lib(30, angle, 127, MOVE_BACKWARD, 0.9, 0, 0.5, 1, 0, 0, 1500, 1, hardwareParameter);
 	hookAction_1 = {0, true, 1};
 	goStraightCmPID_lib(30, 180, 127, MOVE_FORWARD, 0.9, 0, 0.5, 1, 0, 0, 1500, 1, hardwareParameter);
+	intakeAction_1 = {intake_speed, 0, 0, intake_speed, 1};
+}
+
+void right_side2()
+{
+	long start_time = pros::millis();
+	int intake_speed = 120;
+	sys_initial_to_auton_drifting = inertial_sensor.get_rotation();
+	sys_initial_robot_heading = 90;
+
+	clawAction_1 = {0, false, 1};
+	hookAction_1 = {0, false, 1};
+	transmission_piston.set_value(false);
+	top_piston.set_value(true);
+
+	clawAction_1 = {1050, true, 1};
+	goStraightCmPID_lib(100, 90, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
+	goStraightCmPID_lib(50, 70, 127, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 15000, 1, hardwareParameter);
+	turnDegreesPID_lib(180, ON_SPOT_TURN, 100, COUNTER_CLOCKWISE, 6, 0, 0.1, 1200, 2, hardwareParameter);
+	goStraightCm_Back_Vision(40, 180, 70, DETECT_RED_GOAL_SIG, back_vision, 0.5, 0, 1, 0.5, 0, 5, 0.5, 0, 5, 1200, 1, hardwareParameter);
+	double angle = get_robot_heading_lib(hardwareParameter);
+	goStraightCmPID_lib(30, angle, 70, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
+	hookAction_1 = {0, true, 1};
+	goStraightCmPID_lib(50, 270, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 15000, 1, hardwareParameter);
+}
+
+void right_midG()
+{
+	long start_time = pros::millis();
+	int intake_speed = 120;
+	sys_initial_to_auton_drifting = inertial_sensor.get_rotation();
+	sys_initial_robot_heading = 135;
+
+	clawAction_1 = {0, false, 1};
+	hookAction_1 = {0, false, 1};
+	transmission_piston.set_value(false);
+	top_piston.set_value(true);
+
+	clawAction_1 = {1500, true, 1};
+	goStraightCmPID_lib(145, 135, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
+	goStraightCmPID_lib(100, 135, 127, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 15000, 1, hardwareParameter);
 }
 
 void left_side()
@@ -832,7 +873,14 @@ void left_side()
 	goStraightCmPID_lib(105, 85, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
 	goStraightCmPID_lib(90, 75, 127, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 15000, 1, hardwareParameter);
 	turnDegreesPID_lib(180, ON_SPOT_TURN, 100, COUNTER_CLOCKWISE, 6, 0, 0.1, 1200, 2, hardwareParameter);
-	goStraightCmPID_lib(30, 180, 70, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 15000, 1, hardwareParameter);
+	goStraightCm_Back_Vision(40, 180, 70, DETECT_RED_GOAL_SIG, back_vision, 0.5, 0, 1, 0.5, 0, 5, 0.5, 0, 5, 1200, 1, hardwareParameter);
+	hookAction_1 = {0, true, 1};
+	intakeAction_1 = {intake_speed, 0, 0, intake_speed, 1};
+}
+
+void left_wp()
+{
+
 }
 
 /**************************
@@ -888,22 +936,11 @@ void autonomous()
 
 	// test();
 	// test_vision();
-	right_side();
-	// right_side_blue();
-	// left_side_red();
-	// left_side_blue();
-	// mid_goal_red();
-	// mid_goal_blue();
+	// right_side();
+	// left_side();
+	// right_side2();
+	right_midG();
 	// auton_60s_skills_bridge_version();
-	// winpoint();
-	// finals_left_red();
-	// finals_left_blue();
-	// finals_right_red();
-	// finals_right_blue();
-	// finals_mid_red(); // DOESNT WORK
-	// finals_mid_blue(); // DOESNT WORK
-	// bridgeproof_red();
-	// bridgeproof_blue();
 
 	waitForTouch();
 }
