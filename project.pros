@@ -1,11 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-<<<<<<< HEAD
-    "project_name": "60s Skills",
-=======
-    "project_name": "right_midG",
->>>>>>> 5d04dccf8f3c81f905e43bb9c670fffbb5859c32
+    "project_name": "left_side",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -313,7 +309,7 @@
       }
     },
     "upload_options": {
-      "slot": 4
+      "slot": 2
     }
   }
 }
