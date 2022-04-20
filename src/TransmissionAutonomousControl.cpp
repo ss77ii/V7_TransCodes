@@ -210,7 +210,7 @@ void auton_60s_skills_bridge_version()
 	long hook_action_delay_time = 50;
 	long claw_action_delay_time = 120;
 	long start_time = pros::millis();
-	int intake_speed = 100;
+	int intake_speed = 110;
 	arm_motor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
 
 	//	pros::Task arm_holding_task(arm_moving_holding_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "arm_holding_task");
@@ -322,23 +322,24 @@ void auton_60s_skills_bridge_version()
 	intakeAction_1 = {intake_speed, 200, 0, intake_speed, 1};
 	delay(500);
 
-
 	// 	pros::lcd::print(2, "Time=%d", pros::millis() - start_time);
 
 	///////carry first yellow goal to bridge
-	angle = 60;
-	goStraightCmPID_lib(165, angle, 127, MOVE_FORWARD, 3.5, 0, 2.5, 0.2, 0, 5, 1650, 1, hardwareParameter); // 1650
+	angle = 64;
+	goStraightCmPID_lib(159, angle, 127, MOVE_FORWARD, 3.5, 0, 2.5, 0.2, 0, 5, 1650, 1, hardwareParameter); // 1650
 	intakeAction_1 = {0, 0, 0, 0, 1};
 	delay(100);
 
 	//	goStraightCmPID_lib(15, angle, 127, MOVE_FORWARD, 2.5, 0, 1.5, 0.5, 0, 10, 400, 1, hardwareParameter); //100,80,127
 	///////place the first yellow goal to the bridge
-	armAction_1 = {100, 0, PRESS_BRIDGE, 1};
-	delay(600);
-	clawAction_1 = {200, false, 1};
+	armAction_1 = {127, 0, PRESS_BRIDGE, 1};
+	clawAction_1 = {0, false, 1};
+	delay(claw_action_delay_time + 50);
 
 	angle = 70;
-	goStraightCmPID_lib(80, 55, 127, MOVE_BACKWARD, 5, 0, 2.5, 0.5, 0, 4, 1200, 1, hardwareParameter);
+	goStraightCmPID_lib(75, 50, 127, MOVE_BACKWARD, 5, 0, 2.5, 0.5, 0, 4, 1200, 1, hardwareParameter);
+
+	waitForTouch();
 
 	////take first blue goal by front claw
 	hookAction_1 = {0, false, 1};
@@ -363,7 +364,7 @@ void auton_60s_skills_bridge_version()
 
 	////take first red goal by back claw
 	hookAction_1 = {0, true, 1};
-	armAction_1 = {127, 5, RELEASE_BRIDGE, 1};
+	armAction_1 = {127, 5, PRESS_BRIDGE + 300, 1};
 	intakeAction_1 = {intake_speed, 0, 0, intake_speed, 1};
 	////catch first five flower ring
 	goStraightCmPID_lib(112, 340, 127, MOVE_FORWARD, 3.5, 0, 2.5, 0.3, 0, 5, 1500, 1, hardwareParameter);
@@ -911,7 +912,7 @@ void autonomous()
 	// left_side_blue();
 	// mid_goal_red();
 	// mid_goal_blue();
-	 auton_60s_skills_bridge_version();
+	// auton_60s_skills_bridge_version();
 	// winpoint();
 	// finals_left_red();
 	// finals_left_blue();
