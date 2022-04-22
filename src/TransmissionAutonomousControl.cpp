@@ -950,6 +950,7 @@ void autonomous()
 
 	***********************************************/
 
+	right_side();
 	// test();
 	// test_vision();
 	// vision_dataset();
