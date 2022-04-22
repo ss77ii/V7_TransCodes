@@ -691,6 +691,41 @@ double get_distance_back_vision(Vision vision_sensor, int goal_color_signature,
 	return distance;
 }
 
+void goStraightCmPID_lib_backVision(int distance, int angle, int speed, int timeout)
+{
+	vision_object_s_t closest_goal_1;
+	vision_object_s_t closest_goal_2;
+	double w1 = 0, w2 = 0;
+	int cnt = 20;
+
+	for (int i = 0; i < 20; i++)
+	{
+		closest_goal_1 = back_vision.get_by_sig(0, DETECT_RED_GOAL_SIG);
+		w1 += closest_goal_1.width;
+		closest_goal_2 = back_vision.get_by_sig(0, DETECT_BLUE_GOAL_SIG);
+		w2 += closest_goal_2.width;
+		delay(10);
+	}
+
+	w1 = w1 / cnt;
+	w2 = w2 / cnt;
+
+	if (w1 > w2)
+	{
+		goStraightCm_Back_Vision(distance, angle, speed, DETECT_RED_GOAL_SIG, back_vision, 0.5, 0, 1, 0.5, 0, 5, 0.5, 0, 5, timeout, 1, hardwareParameter);
+		return;
+	}
+
+	if (w2 > w1)
+	{
+		goStraightCm_Back_Vision(distance, angle, speed, DETECT_BLUE_GOAL_SIG, back_vision, 0.5, 0, 1, 0.5, 0, 5, 0.5, 0, 5, timeout, 1, hardwareParameter);
+		return;
+	}
+
+	goStraightCmPID_lib(distance, angle, speed, MOVE_BACKWARD, 0.9, 0, 0.5, 1, 0, 0, timeout, 1, hardwareParameter);
+	return;
+}
+
 void test()
 {
 	arm_motor.set_brake_mode(E_MOTOR_BRAKE_COAST);
