@@ -93,6 +93,12 @@ detected_vision_goal_lib get_goal_object_front_vision(int goal_color_signature)
 					left_goal = second_goal;
 					right_goal = largest_goal;
 				}
+
+				if(right_goal.left_coord - left_goal.left_coord + left_goal.width > 40){ //detect two wrong goal
+					std::cout << "   888   ";
+					return final_goal;
+				}
+
 				if (left_goal.left_coord + left_goal.width < right_goal.left_coord)
 				{ // two goals not overlapped
 					final_goal.left_coord = left_goal.left_coord;
@@ -308,7 +314,7 @@ void auton_60s_skills_bridge_version()
 	delay(hook_action_delay_time);
 	//	intakeAction_1 = {100, 500, 0, 100, 1};
 	goStraightCmPID_lib(65, 82, 127, MOVE_FORWARD, 1.5, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter); // 100,80,127
-	goStraightCm_Front_Vision(60, 80, 100, DETECT_YELLOW_GOAL_SIG, front_vision,
+	goStraightCm_Front_Vision_limit_switch(65, 80, 100, DETECT_YELLOW_GOAL_SIG, front_vision,
 							  0.4, 0, 1.5, 0.3, 0, 10, 0.4, 0, 0, 1200, 1, hardwareParameter);
 	intakeAction_1 = {0, 0, 0, 0, 1};
 	//	goStraightCmPID_lib_limit_switch(20, angle, 60, MOVE_FORWARD, 1.5, 0, 1.5, 0.8, 0, 0, 600, 1, hardwareParameter);
@@ -318,47 +324,46 @@ void auton_60s_skills_bridge_version()
 	delay(150);
 	armAction_1 = {127, 200, RELEASE_BRIDGE + 100, 1};
 
-	intakeAction_1 = {intake_speed, 200, 0, intake_speed, 1};
+	intakeAction_1 = {60, 200, 0, 60, 1};
 	delay(500);
 
 	// 	pros::lcd::print(2, "Time=%d", pros::millis() - start_time);
 
 	///////carry first yellow goal to bridge
-	angle = 64;
-	goStraightCmPID_lib(159, angle, 127, MOVE_FORWARD, 3.5, 0, 2.5, 0.2, 0, 5, 1650, 1, hardwareParameter); // 1650
+	angle = 60;
+	goStraightCmPID_lib(170, angle, 127, MOVE_FORWARD, 3.5, 0, 2.5, 0.2, 0, 5, 1650, 1, hardwareParameter); // 1650
 	intakeAction_1 = {0, 0, 0, 0, 1};
 	delay(100);
 
 	//	goStraightCmPID_lib(15, angle, 127, MOVE_FORWARD, 2.5, 0, 1.5, 0.5, 0, 10, 400, 1, hardwareParameter); //100,80,127
 	///////place the first yellow goal to the bridge
 	armAction_1 = {127, 0, PRESS_BRIDGE, 1};
+	delay(500);
 	clawAction_1 = {0, false, 1};
-	delay(claw_action_delay_time + 50);
+	delay(50);
 
 	angle = 70;
 	goStraightCmPID_lib(75, 50, 127, MOVE_BACKWARD, 5, 0, 2.5, 0.5, 0, 4, 1200, 1, hardwareParameter);
 
-	waitForTouch();
-
 	////take first blue goal by front claw
-	hookAction_1 = {0, false, 1};
 	armAction_1 = {127, 0, 0, 1};
+	hookAction_1 = {0, false, 1};
 	delay(hook_action_delay_time);
 	goStraightCmPID_lib(27, 50, 100, MOVE_FORWARD, 5, 0, 1, 0.5, 0, 10, 700, 1, hardwareParameter);
 	turnDegreesPID_lib(230, ON_SPOT_TURN, 100, COUNTER_CLOCKWISE, 6, 0, 25, 1100, 2, hardwareParameter);
-	goStraightCmPID_lib(30, 230, 80, MOVE_FORWARD, 5, 0, 1, 0.5, 0, 10, 800, 1, hardwareParameter);
+	goStraightCmPID_lib_limit_switch(30, 230, 80, MOVE_FORWARD, 5, 0, 1, 0.5, 0, 10, 800, 1, hardwareParameter);
 	clawAction_1 = {0, true, 1};
 	armAction_1 = {127, 0, 350, 1};
 	delay(150);
 
-	goStraightCmPID_lib(68, 5, 127, MOVE_BACKWARD, 1.0, 0, 1.2, 0.8, 0, 10, 1000, 1, hardwareParameter); // 1500
+	goStraightCmPID_lib(68, 0, 127, MOVE_BACKWARD, 1.2, 0, 1.2, 0.8, 0, 10, 1000, 1, hardwareParameter); // 1500
 	double distance = get_distance_back_vision(back_vision, DETECT_RED_GOAL_SIG, 10, 10, 60, 120);
 	if (distance > 70 || distance < 10)
 	{
 		distance = 20;
 	}
 
-	goStraightCm_Back_Vision(distance + 25, 350, 65, DETECT_RED_GOAL_SIG, back_vision,
+	goStraightCm_Back_Vision(distance + 20, 350, 65, DETECT_RED_GOAL_SIG, back_vision,
 							 0.5, 0, 1, 0.5, 0, 5, 0.5, 0, 5, 800, 1, hardwareParameter);
 
 	////take first red goal by back claw
@@ -371,25 +376,20 @@ void auton_60s_skills_bridge_version()
 	goStraightCmPID_lib(23, 10, 100, MOVE_FORWARD, 2.5, 0, 0, 0.8, 0, 2, 800, 1, hardwareParameter); // 1300
 	goStraightCmPID_lib(25, 60, 100, MOVE_FORWARD, 2.5, 0, 0, 0.8, 0, 2, 800, 1, hardwareParameter); // 1300
 	armAction_1 = {127, 500, PRESS_BRIDGE, 1};
-	goStraightCmPID_lib(55, 90, 100, MOVE_FORWARD, 2.5, 0, 2, 1, 0, 5, 1100, 1, hardwareParameter);
+	goStraightCmPID_lib(50, 90, 100, MOVE_FORWARD, 2.5, 0, 2, 1, 0, 5, 1100, 1, hardwareParameter);
 
-	waitForTouch();
-
+	delay(200);
 	clawAction_1 = {0, false, 1};
-	delay(claw_action_delay_time);
+	delay(50);
 	goStraightCmPID_lib(17, 180, 100, MOVE_BACKWARD, 1.5, 0, 1, 1, 0, 5, 1000, 1, hardwareParameter);
 
-	armAction_1 = {127, 200, 0, 1};
-	turnDegreesPID_lib(260, ON_SPOT_TURN, 100, COUNTER_CLOCKWISE, 6, 0, 25, 1100, 2, hardwareParameter);
+	armAction_1 = {127, 0, 0, 1};
+	turnDegreesPID_lib(245, ON_SPOT_TURN, 100, COUNTER_CLOCKWISE, 6, 0, 25, 1100, 2, hardwareParameter);
 	intakeAction_1 = {intake_speed, 0, 0, intake_speed, 1};
-
-	pros::lcd::print(2, "Time=%d", pros::millis() - start_time);
-	std::cout << "Time=%d" << pros::millis() - start_time << std::endl;
-	waitForTouch();
 
 	////take middle high yellow goal
 	delay(100); //
-	new_goStraightCm_Front_Vision(100, 230, 70, DETECT_YELLOW_GOAL_SIG, front_vision,
+	goStraightCm_Front_Vision_limit_switch(100, 230, 70, DETECT_YELLOW_GOAL_SIG, front_vision,
 								  0.5, 0, 1, 0.3, 0, 10, 0.3, 0, 1, 1500, 1, hardwareParameter);
 	intakeAction_1 = {0, 0, 0, 0, 1};
 	// angle = get_robot_heading_lib(hardwareParameter);
@@ -398,9 +398,10 @@ void auton_60s_skills_bridge_version()
 	// delay(150);
 	clawAction_1 = {0, true, 1};
 	delay(claw_action_delay_time);
+
 	//			armAction_1 = {127, 0, PRESS_BRIDGE + 170, 1};
-	armAction_1 = {127, 0, RELEASE_BRIDGE, 1};
-	turnDegreesPID_lib(90, ON_SPOT_TURN, 127, COUNTER_CLOCKWISE, 6, 0, 25, 1600, 2, hardwareParameter);
+	armAction_1 = {127, 0, PRESS_BRIDGE + 80, 1};
+	turnDegreesPID_lib(90, ON_SPOT_TURN, 127, COUNTER_CLOCKWISE, 6, 0, 27, 1600, 2, hardwareParameter);
 	intakeAction_1 = {intake_speed, 0, 0, intake_speed, 1};
 	delay(350);
 	angle = 95;
@@ -409,20 +410,22 @@ void auton_60s_skills_bridge_version()
 
 	goStraightCmPID_lib(90, angle, 85, MOVE_FORWARD, 1.5, 0, 0, 1, 0, 5, 1500, 1, hardwareParameter);
 	// move high yellow goal to red bridge
-	armAction_1 = {127, 0, PRESS_BRIDGE - 30, 1};
+	armAction_1 = {127, 0, PRESS_BRIDGE, 1};
 	delay(300);
 	goStraightCmPID_lib(15, angle, 80, MOVE_FORWARD, 1.5, 0, 0, 1, 0, 5, 700, 1, hardwareParameter);
 	//			armAction_1 = {127, 0, PRESS_BRIDGE - 20, 1};
-	armAction_1 = {127, 0, PRESS_BRIDGE - 30, 1};
+	// armAction_1 = {127, 0, PRESS_BRIDGE - 30, 1};
 	delay(500);
 	//			turnDegreesPID_lib(80, ON_SPOT_TURN, 100, CLOCKWISE, 6, 0, -20, 700, 2, hardwareParameter);
 	////place high yellow mobile goal
 	clawAction_1 = {0, false, 1};
-	armAction_1 = {127, 0, PRESS_BRIDGE - 40, 1};
-	delay(claw_action_delay_time + 100);
+	// armAction_1 = {127, 0, PRESS_BRIDGE - 40, 1};
+	delay(claw_action_delay_time + 200);
 	goStraightCmPID_lib(5, angle, 127, MOVE_BACKWARD, 3.5, 0, 2.5, 4, 0, 5, 400, 1, hardwareParameter);
-	armAction_1 = {127, 0, PRESS_BRIDGE + 100, 1};
+	// armAction_1 = {127, 0, PRESS_BRIDGE + 100, 1};
 	delay(200);
+
+	waitForTouch();
 
 	intakeAction_1 = {0, 0, 0, 0, 1};
 	goStraightCmPID_lib(60, 90, 127, MOVE_BACKWARD, 3, 0, 1, 0.5, 0, 2, 1200, 1, hardwareParameter);
@@ -650,17 +653,6 @@ double get_distance_back_vision(Vision vision_sensor, int goal_color_signature,
 	long i = 0;
 	long startTime = pros::millis();
 
-	// 	for(i = 0; i < samplingNumber;){
-	// 			closest_goal= vision_sensor.get_by_sig(0, goal_color_signature);
-	// 			if(closest_goal.width < 60){
-	// 				sum = sum + (double)(closest_goal.width);
-	// 				i++;
-	// 			}
-	// 			pros::lcd::print(0, "Width=%d,  M=%d", closest_goal.width, closest_goal.x_middle_coord);
-	// 			delay(sensingTimeInterval_Millis);
-	// 		}
-	// 	pros::lcd::print(1, "avg=%.1f", sum/((double)i));
-	// waitForTouch();
 
 	while (i < samplingNumber)
 	{
@@ -685,8 +677,9 @@ double get_distance_back_vision(Vision vision_sensor, int goal_color_signature,
 	width1 = sum / ((double)i);
 	//	pros::lcd::print(1, "Width=%.1f", width1);
 	//	distance = 0 - (0.00002*width1*width1*width1) + (0.014*width1*width1) - (2.9598*width1) + 242.31;
-	distance = 217.84 * powf(2.71828, -0.012 * width1);
+	// distance = 217.84 * powf(2.71828, -0.012 * width1);
 	// distance = -1 * 0.0000002 * powf(width1, 3) + 0.0001 * powf(width1, 2) - 0.026 * width1 + 2.4536;
+		distance = 184.2 * powf(2.71828, -0.009 * width1);
 
 	return distance;
 }
@@ -728,6 +721,17 @@ void goStraightCmPID_lib_backVision(int distance, int angle, int speed, int time
 
 void test()
 {
+	while (true){
+		if(limit_switch.get_value() == 1) {
+		  lcd::print(1, "aaaaaaaaaaaaaaaaa");
+		}
+		else {
+	 	  lcd::print(1, "bbb=%d", limit_switch.get_value());
+		}
+		delay(5);
+	}
+
+
 	arm_motor.set_brake_mode(E_MOTOR_BRAKE_COAST);
 	while (true)
 	{
@@ -750,6 +754,8 @@ void test_vision()
 {
 
 	long startTime = pros::millis();
+	Vision vision1 = back_vision;
+
 
 	vision_object_s_t first_goal;
 	vision_object_s_t second_goal;
@@ -760,7 +766,7 @@ void test_vision()
 	int flag1 = 0;
 	int flag2 = 0;
 	std::cout << "exposure = " << exposure << std::endl;
-	front_vision.set_exposure(exposure);
+	vision1.set_exposure(exposure);
 	while (true)
 	{
 		first_goal.width = 0;
@@ -769,10 +775,10 @@ void test_vision()
 		second_goal.width = 0;
 		second_goal.height = 0;
 		second_goal.left_coord = 0;
-		first_goal = front_vision.get_by_sig(0, DETECT_YELLOW_GOAL_SIG);
+		first_goal = vision1.get_by_sig(0, DETECT_RED_GOAL_SIG);
 		e_number1 = errno;
 		errno = 0;
-		second_goal = front_vision.get_by_sig(1, DETECT_YELLOW_GOAL_SIG);
+		second_goal = vision1.get_by_sig(1, DETECT_RED_GOAL_SIG);
 		e_number2 = errno;
 		errno = 0;
 		// ENODEV; 19 - The port cannot be configured as a vision sensor
@@ -819,8 +825,38 @@ void test_vision()
 
 void vision_dataset()
 {
+	while(true){
+		double distance1 = get_distance_back_vision(back_vision, DETECT_RED_GOAL_SIG, 10, 10, 60, 120);
+		std::cout << "distance: " << distance1 << std::endl;
+		delay(50);
+	}
+	waitForTouch();
+
+	double distance = 0;
+	double width1;
+	double sum = 0;
+	long i = 0;
+	long startTime = pros::millis();
+	int samplingNumber = 80;
+	int sensingTimeInterval_Millis = 50;
+
 	vision_object_s_t closest_goal;
 	back_vision.set_exposure(30);
+
+		for(i = 0; i < samplingNumber; ){
+				closest_goal= back_vision.get_by_sig(0, DETECT_RED_GOAL_SIG);
+				//if(closest_goal.width < 60){
+					sum = sum + (double)(closest_goal.width);
+					i++;
+				//}
+				pros::lcd::print(0, "Width=%d,  M=%d", closest_goal.width, closest_goal.x_middle_coord);
+				delay(sensingTimeInterval_Millis);
+			}
+		pros::lcd::print(1, "avg=%.1f", sum/((double)i));
+	waitForTouch();
+
+
+
 	while (true)
 	{
 		//		closest_goal = back_vision.get_by_sig(0, DETECT_RED_GOAL_SIG);
@@ -1002,9 +1038,12 @@ void autonomous()
 	***********************************************/
 
 	// right_side();
+<<<<<<< Updated upstream
 	right_side2();
 	// right_midG();
 	// left_side();
+=======
+>>>>>>> Stashed changes
 	// test();
 	// test_vision();
 	// vision_dataset();
@@ -1014,7 +1053,11 @@ void autonomous()
 	// left_side_blue();
 	// mid_goal_red();
 	// mid_goal_blue();
+<<<<<<< Updated upstream
 	// auto+n_60s_skills_bridge_version();
+=======
+	 auton_60s_skills_bridge_version();
+>>>>>>> Stashed changes
 	// winpoint();
 	// finals_left_red();
 	// finals_left_blue();
