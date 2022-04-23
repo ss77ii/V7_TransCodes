@@ -1,6 +1,8 @@
 #include "../include/main.h"
 #include "TransmissionConfiguration.hpp"
 
+using namespace pros;
+
 int clawState = 0; // 0 = retracted
 
 
