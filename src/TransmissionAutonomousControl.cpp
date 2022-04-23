@@ -888,6 +888,7 @@ void right_side2()
 	goStraightCmPID_lib(30, angle, 70, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
 	hookAction_1 = {0, true, 1};
 	armAction_1 = {127, 0, 600, 1};
+	intakeAction_1 = {intake_speed, 0, 0, intake_speed, 1};
 	goStraightCmPID_lib(50, 270, 127, MOVE_FORWARD, 1.8, 0, 2.0, 1, 0, 0, 1500, 1, hardwareParameter);
 	delay(500);
 	goStraightCmPID_lib(30, 270, 60, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
@@ -1001,9 +1002,9 @@ void autonomous()
 	***********************************************/
 
 	// right_side();
-	// right_side2();
+	right_side2();
 	// right_midG();
-	left_side();
+	// left_side();
 	// test();
 	// test_vision();
 	// vision_dataset();
