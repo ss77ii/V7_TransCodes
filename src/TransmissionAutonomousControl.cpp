@@ -853,15 +853,13 @@ void right_side()
 	top_piston.set_value(false);
 	turnDegreesPID_lib(132, ON_SPOT_TURN, 100, COUNTER_CLOCKWISE, 6, 0, 0.1, 1200, 2, hardwareParameter);
 	goStraightCmPID_lib(20, 132, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
-	goStraightCm_Front_Vision(50, 135, 90, DETECT_YELLOW_GOAL_SIG, front_vision, 0.5, 0, 1, 0.3, 0, 10, 0.8, 0, 0, 1500, 1, hardwareParameter);
-	double angle = get_robot_heading_lib(hardwareParameter);
-	goStraightCmPID_lib(30, angle, 70, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
+	goStraightCm_Front_Vision(80, 135, 90, DETECT_YELLOW_GOAL_SIG, front_vision, 0.5, 0, 1, 0.3, 0, 10, 0.8, 0, 0, 1500, 1, hardwareParameter);
 
 	clawAction_1 = {0, true, 1};
-	goStraightCmPID_lib(40, 180, 127, MOVE_BACKWARD, 0.9, 0, 0.5, 1, 0, 0, 1500, 1, hardwareParameter);
+	goStraightCmPID_lib(60, 90, 127, MOVE_BACKWARD, 0.9, 0, 0.3, 1, 0, 0, 1500, 1, hardwareParameter);
+	turnDegreesPID_lib(180, ON_SPOT_TURN, 100, COUNTER_CLOCKWISE, 6, 0, 0.1, 1200, 2, hardwareParameter);
 	std::cout << "\n--------------------------------------------\n";
-	waitForTouch();
-	goStraightCm_Back_Vision(70, 180, 100, DETECT_RED_GOAL_SIG, back_vision, 0.5, 0, 1, 0.5, 0, 5, 0.5, 0, 5, 1200, 1, hardwareParameter);
+	goStraightCmPID_lib_backVision(100, 180, 100, 1200);
 	angle = get_robot_heading_lib(hardwareParameter);
 	goStraightCmPID_lib(30, angle, 127, MOVE_BACKWARD, 0.9, 0, 0.5, 1, 0, 0, 1500, 1, hardwareParameter);
 	hookAction_1 = {0, true, 1};
@@ -885,11 +883,17 @@ void right_side2()
 	goStraightCmPID_lib(100, 90, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
 	goStraightCmPID_lib(50, 70, 127, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 15000, 1, hardwareParameter);
 	turnDegreesPID_lib(180, ON_SPOT_TURN, 100, COUNTER_CLOCKWISE, 6, 0, 0.1, 1200, 2, hardwareParameter);
-	goStraightCm_Back_Vision(40, 180, 70, DETECT_RED_GOAL_SIG, back_vision, 0.5, 0, 1, 0.5, 0, 5, 0.5, 0, 5, 1200, 1, hardwareParameter);
+	goStraightCmPID_lib_backVision(40, 180, 70, 1200);
 	double angle = get_robot_heading_lib(hardwareParameter);
 	goStraightCmPID_lib(30, angle, 70, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
 	hookAction_1 = {0, true, 1};
-	goStraightCmPID_lib(50, 270, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 15000, 1, hardwareParameter);
+	armAction_1 = {127, 0, 600, 1};
+	goStraightCmPID_lib(50, 270, 127, MOVE_FORWARD, 1.8, 0, 2.0, 1, 0, 0, 1500, 1, hardwareParameter);
+	delay(500);
+	goStraightCmPID_lib(30, 270, 60, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
+	goStraightCmPID_lib(60, 270, 60, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
+	delay(500);
+	goStraightCmPID_lib(60, 270, 60, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
 }
 
 void right_midG()
@@ -897,16 +901,27 @@ void right_midG()
 	long start_time = pros::millis();
 	int intake_speed = 110;
 	sys_initial_to_auton_drifting = inertial_sensor.get_rotation();
-	sys_initial_robot_heading = 135;
+	sys_initial_robot_heading = 125;
 
 	clawAction_1 = {0, false, 1};
 	hookAction_1 = {0, false, 1};
 	transmission_piston.set_value(false);
 	top_piston.set_value(true);
 
-	clawAction_1 = {1500, true, 1};
-	goStraightCmPID_lib(145, 135, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
-	goStraightCmPID_lib(100, 135, 127, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 15000, 1, hardwareParameter);
+	clawAction_1 = {1300, true, 1};
+	goStraightCmPID_lib(133, 125, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0.02, 0, 1500, 1, hardwareParameter);
+	delay(50);
+	goStraightCmPID_lib(35, 125, 127, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 15000, 1, hardwareParameter);
+	turnDegreesPID_lib(180, ON_SPOT_TURN, 100, COUNTER_CLOCKWISE, 6, 0, 0.1, 1200, 2, hardwareParameter);
+	goStraightCmPID_lib_backVision(80, 180, 100, 1200);
+	hookAction_1 = {0, true, 1};
+	armAction_1 = {127, 0, 600, 1};
+	goStraightCmPID_lib(50, 270, 127, MOVE_FORWARD, 2.8, 0, 2.0, 1, 0, 0, 1500, 1, hardwareParameter);
+	delay(500);
+	goStraightCmPID_lib(30, 270, 60, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
+	goStraightCmPID_lib(60, 270, 60, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
+	delay(500);
+	goStraightCmPID_lib(60, 270, 60, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
 }
 
 void left_side()
@@ -921,7 +936,7 @@ void left_side()
 	transmission_piston.set_value(false);
 	top_piston.set_value(true);
 
-	clawAction_1 = {1150, true, 1};
+	clawAction_1 = {1050, true, 1};
 	goStraightCmPID_lib(105, 85, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
 	goStraightCmPID_lib(90, 75, 127, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 15000, 1, hardwareParameter);
 	turnDegreesPID_lib(180, ON_SPOT_TURN, 100, COUNTER_CLOCKWISE, 6, 0, 0.1, 1200, 2, hardwareParameter);
@@ -985,7 +1000,10 @@ void autonomous()
 
 	***********************************************/
 
-	right_side();
+	// right_side();
+	// right_side2();
+	// right_midG();
+	left_side();
 	// test();
 	// test_vision();
 	// vision_dataset();
@@ -995,7 +1013,7 @@ void autonomous()
 	// left_side_blue();
 	// mid_goal_red();
 	// mid_goal_blue();
-	// auton_60s_skills_bridge_version();
+	// auto+n_60s_skills_bridge_version();
 	// winpoint();
 	// finals_left_red();
 	// finals_left_blue();
