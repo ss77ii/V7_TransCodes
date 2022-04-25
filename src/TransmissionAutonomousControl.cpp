@@ -956,19 +956,20 @@ void right_wp()
 	clawAction_1 = {0, false, 1};
 	hookAction_1 = {0, false, 1};
 	transmission_piston.set_value(false);
-	top_piston.set_value(true);
+	top_piston.set_value(true);----
+	+`
 
 	clawAction_1 = {1050, true, 1};
 	goStraightCmPID_lib(100, 90, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
 	goStraightCmPID_lib(50, 70, 127, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 15000, 1, hardwareParameter);
 	turnDegreesPID_lib(180, ON_SPOT_TURN, 100, COUNTER_CLOCKWISE, 6, 0, 0.1, 1200, 2, hardwareParameter);
-	goStraightCmPID_lib_backVision(40, 180, 70, 1200);
+	goStraightCmPID_lib_backVision(40, 180, 70, 1200);		
 	double angle = get_robot_heading_lib(hardwareParameter);
 	goStraightCmPID_lib(30, angle, 70, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
 	hookAction_1 = {0, true, 1};
-	armAction_1 = {127, 0, 400, 1};
+	armAction_1 = {127, 0, 400, 1};	
 	intakeAction_1 = {intake_speed, 0, 0, intake_speed, 1};
-	goStraightCmPID_lib(100, 180, 127, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 4000, 1, hardwareParameter);
+	goStraightCmPID_lib(275, 180, 90, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 8000, 1, hardwareParameter);		
 }
 
 /**************************
