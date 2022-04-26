@@ -8,6 +8,7 @@ pros::Task hook_set(hook_set_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STAC
 pros::Task claw_set(claw_set_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "claw set");
 pros::Task arm_set(arm_set_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "arm set");
 
+
 void display_vision_error(int line, std::string msg){
 	if(errno == 0){
 		pros::lcd::print(line, "n=%d  %s", errno, msg);

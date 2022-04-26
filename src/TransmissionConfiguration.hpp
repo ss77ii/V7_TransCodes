@@ -256,6 +256,7 @@ extern void hook_set_fn(void *param);
 extern void claw_set_fn(void *param);
 extern void intake_set_fn(void *param);
 extern void arm_set_fn(void *param);
+extern void transmission_con_fn(void *param);
 extern void background_command_fn(void *param);
 extern void breakAll();
 
@@ -266,7 +267,7 @@ extern pros::Task intake_set;
 extern pros::Task hook_set;
 extern pros::Task claw_set;
 extern pros::Task arm_set;
-
+extern pros::Task transmission_con;
 
 extern pros::Vision front_vision;
 extern pros::Vision back_vision;

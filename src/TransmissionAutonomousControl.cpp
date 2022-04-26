@@ -37,6 +37,40 @@ AUTONOMOUS PROGRAMS
 // EAGAIN; 11 - Reading the vision sensor failed for an unknown reason.
 **************************************************************************/
 
+bool robot_staled = false;
+bool check = false;
+
+void transmission_con_fn(void *param)
+{
+	while (true)
+	{
+		if (robot_staled)
+		{
+			if (!check)
+			{
+				std::cout << "Lmao" << std::endl;
+				int degrees = Y_encoder.get_value();
+				delay(1000);
+				int second_degree = Y_encoder.get_value();
+				std::cout << degrees << " - " << second_degree << std::endl;
+
+				if (abs(second_degree - degrees) <= 70)
+				{
+					std::cout << "lol" << std::endl;
+					transmission_piston.set_value(true);
+					check = true;
+				}
+			}
+		}
+		else
+		{
+			transmission_piston.set_value(false);
+		}
+	}
+}
+
+pros::Task transmission_con(transmission_con_fn, (void *)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "transmission condition task");
+
 detected_vision_goal_lib get_goal_object_front_vision(int goal_color_signature)
 {
 	detected_vision_goal_lib final_goal = {goal_color_signature, 0, 0, 0, 0, 0, 0};
@@ -928,7 +962,7 @@ void right_midG()
 void left_side()
 {
 	long start_time = pros::millis();
-	int intake_speed = 110;
+	int intake_speed = 127;
 	sys_initial_to_auton_drifting = inertial_sensor.get_rotation();
 	sys_initial_robot_heading = 85;
 
@@ -938,12 +972,22 @@ void left_side()
 	top_piston.set_value(true);
 
 	clawAction_1 = {1050, true, 1};
-	goStraightCmPID_lib(105, 85, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
-	goStraightCmPID_lib(90, 75, 127, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 15000, 1, hardwareParameter);
+	goStraightCmPID_lib_limit_switch(105, 85, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
+	clawAction_1 = {0, true, 1};
+	delay(20);
+	robot_staled = true;
+	goStraightCmPID_lib(105, 85, 127, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 15000, 1, hardwareParameter);
+	robot_staled = false;
+	transmission_piston.set_value(false);
 	turnDegreesPID_lib(180, ON_SPOT_TURN, 100, COUNTER_CLOCKWISE, 6, 0, 0.1, 1200, 2, hardwareParameter);
-	goStraightCm_Back_Vision(40, 180, 70, DETECT_RED_GOAL_SIG, back_vision, 0.5, 0, 1, 0.5, 0, 5, 0.5, 0, 5, 1200, 1, hardwareParameter);
+	goStraightCm_Back_Vision(50, 180, 70, DETECT_RED_GOAL_SIG, back_vision, 0.5, 0, 1, 0.5, 0, 5, 0.5, 0, 5, 1200, 1, hardwareParameter);
 	hookAction_1 = {0, true, 1};
+	armAction_1 = {127, 200, 400, 1};
+	goStraightCmPID_lib(90, 90, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
+	turnDegreesPID_lib(0, ON_SPOT_TURN, 100, CLOCKWISE, 6, 0, 0.1, 1200, 2, hardwareParameter);
 	intakeAction_1 = {intake_speed, 0, 0, intake_speed, 1};
+	goStraightCmPID_lib(200, 0, 50, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 5000, 1, hardwareParameter);
+	goStraightCmPID_lib(150, 0, 100, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 5000, 1, hardwareParameter);
 }
 
 void right_wp()
@@ -956,20 +1000,19 @@ void right_wp()
 	clawAction_1 = {0, false, 1};
 	hookAction_1 = {0, false, 1};
 	transmission_piston.set_value(false);
-	top_piston.set_value(true);----
-	+`
+	top_piston.set_value(true);
 
 	clawAction_1 = {1050, true, 1};
 	goStraightCmPID_lib(100, 90, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
 	goStraightCmPID_lib(50, 70, 127, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 15000, 1, hardwareParameter);
 	turnDegreesPID_lib(180, ON_SPOT_TURN, 100, COUNTER_CLOCKWISE, 6, 0, 0.1, 1200, 2, hardwareParameter);
-	goStraightCmPID_lib_backVision(40, 180, 70, 1200);		
+	goStraightCmPID_lib_backVision(40, 180, 70, 1200);
 	double angle = get_robot_heading_lib(hardwareParameter);
 	goStraightCmPID_lib(30, angle, 70, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
 	hookAction_1 = {0, true, 1};
-	armAction_1 = {127, 0, 400, 1};	
+	armAction_1 = {127, 0, 400, 1};
 	intakeAction_1 = {intake_speed, 0, 0, intake_speed, 1};
-	goStraightCmPID_lib(275, 180, 90, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 8000, 1, hardwareParameter);		
+	goStraightCmPID_lib(275, 180, 90, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 8000, 1, hardwareParameter);
 }
 
 /**************************
@@ -1026,8 +1069,8 @@ void autonomous()
 	// right_side();
 	// right_side2();
 	// right_midG();
-	right_wp();
-	// left_side();
+	// right_wp();
+	left_side();
 	// test();
 	// test_vision();
 	// vision_dataset();
