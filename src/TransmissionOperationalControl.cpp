@@ -307,7 +307,7 @@ void opcontrol()
 	while(true) {
 		pros::lcd::print(0, "RF:%.1f-RM:%.1f-RB:%.1f", right_front_motor.get_temperature(), right_mid_motor.get_temperature(), right_back_motor.get_temperature());
 		pros::lcd::print(1, "LF:%.1f-LM:%.1f-LB:%.1f", left_front_motor.get_temperature(), left_mid_motor.get_temperature(), left_back_motor.get_temperature());
-		pros::lcd::print(2, "ARM:%.1f", arm_motor.get_temperature());
+		pros::lcd::print(2, "ARM:%.1f-INT:%.1f", arm_motor.get_temperature(), intake_motor.get_temperature());
 		if (master.get_digital(DIGITAL_LEFT)){
 			arm.suspend();
 			drive.suspend();
