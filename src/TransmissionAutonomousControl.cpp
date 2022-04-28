@@ -725,6 +725,24 @@ double get_distance_back_vision(Vision vision_sensor, int goal_color_signature,
 	return distance;
 }
 
+int get_frontYellow_width()
+{
+	vision_object_s_t front_yellow;
+	int w = 0;
+	int cnt = 10;
+
+	for (int i = 0; i < 10; i++)
+	{
+		front_yellow = front_vision.get_by_sig(0, DETECT_YELLOW_GOAL_SIG);
+		w += front_yellow.width;
+		delay(10);
+	}
+
+	w = w / cnt;
+
+	return w;
+}
+
 void goStraightCmPID_lib_backVision(int distance, int angle, int speed, int timeout)
 {
 	vision_object_s_t closest_goal_1;
@@ -986,7 +1004,9 @@ void left_side()
 	goStraightCmPID_lib(90, 90, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 1500, 1, hardwareParameter);
 	turnDegreesPID_lib(0, ON_SPOT_TURN, 100, CLOCKWISE, 6, 0, 0.1, 1200, 2, hardwareParameter);
 	intakeAction_1 = {intake_speed, 0, 0, intake_speed, 1};
-	goStraightCmPID_lib(200, 0, 50, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 5000, 1, hardwareParameter);
+	goStraightCmPID_lib(70, 0, 50, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 5000, 1, hardwareParameter);
+	turnDegreesPID_lib(90, ON_SPOT_TURN, 100, COUNTER_CLOCKWISE, 6, 0, 0.1, 1200, 2, hardwareParameter);
+
 	goStraightCmPID_lib(150, 0, 100, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 5000, 1, hardwareParameter);
 }
 
@@ -1071,25 +1091,6 @@ void autonomous()
 	// right_midG();
 	// right_wp();
 	left_side();
-	// test();
-	// test_vision();
-	// vision_dataset();
-	// right_side();
-	// right_side_blue();
-	// left_side_red();
-	// left_side_blue();
-	// mid_goal_red();
-	// mid_goal_blue();
-	// auto+n_60s_skills_bridge_version();
-	// winpoint();
-	// finals_left_red();
-	// finals_left_blue();
-	// finals_right_red();
-	// finals_right_blue();
-	// finals_mid_red(); // DOESNT WORK
-	// finals_mid_blue(); // DOESNT WORK
-	// bridgeproof_red();
-	// bridgeproof_blue();
 
 	waitForTouch();
 }
