@@ -45,7 +45,7 @@ using namespace pros;
 
 #define EXTENDER_PORT 13
 
-#define INERTIAL_SENSOR_PORT 9
+#define INERTIAL_SENSOR_PORT 7
 
 #define FRONT_VISION_PORT 11
 #define BACK_VISION_PORT 15

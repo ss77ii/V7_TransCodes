@@ -93,24 +93,23 @@ void initialize()
 
 	pros::lcd::initialize();
 	inertial_sensor.reset();
-  delay(2500);
+  delay(3000);
+  pros::lcd::set_text(0, "         ----16868K----");
 
+  /*
+	  pros::lcd::initialize();
+	  pros::lcd::register_btn0_cb(lcd_left_button);   //red or blue team selection button
+	  pros::lcd::register_btn1_cb(lcd_center_button); //square or rectangle selection button
+	  pros::lcd::register_btn2_cb(lcd_right_button);  //confirm button
+	  pros::delay(500);
+	  pros::lcd::set_text(0, "         ----16868A----");
+	  pros::lcd::set_text(1, "Inertial sensor initializing......");
+	  inertial_sensor.reset();
+	  pros::delay(3000);
+  */
 
-
-/*
-	pros::lcd::initialize();
-	pros::lcd::register_btn0_cb(lcd_left_button);   //red or blue team selection button
-	pros::lcd::register_btn1_cb(lcd_center_button); //square or rectangle selection button
-	pros::lcd::register_btn2_cb(lcd_right_button);  //confirm button
-	pros::delay(500);
-	pros::lcd::set_text(0, "         ----16868A----");
-	pros::lcd::set_text(1, "Inertial sensor initializing......");
-	inertial_sensor.reset();
-	pros::delay(3000);
-*/
-
-//	pros::Task odometry(odometry_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "odometry");
-//	pros::Task infoPrint(infoPrint_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "infoprint");
+  //	pros::Task odometry(odometry_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "odometry");
+  //	pros::Task infoPrint(infoPrint_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "infoprint");
 }
 
 
