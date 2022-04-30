@@ -1019,7 +1019,6 @@ void right_midG()
 	turnDegreesPID_lib(180, ON_SPOT_TURN, 100, COUNTER_CLOCKWISE, 6, 0, 0.1, 1200, 2, hardwareParameter);
 	goStraightCmPID_lib_backVision(80, 180, 100, 1200);
 	hookAction_1 = {0, true, 1};
-
 }
 
 void left_side()
@@ -1113,21 +1112,25 @@ void right_wp()
 	goStraightCmPID_lib(30, angle, 70, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 700, 1, hardwareParameter);
 	hookAction_1 = {0, true, 1};
 	armAction_1 = {127, 0, 400, 1};
+	goStraightCmPID_lib(52, 140, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 8000, 1, hardwareParameter);
 	intakeAction_1 = {intake_speed, 0, 0, intake_speed, 1};
-	goStraightCmPID_lib(60, 140, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 8000, 1, hardwareParameter);
-	goStraightCmPID_lib(140, 185, 70, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 8000, 1, hardwareParameter);
+	goStraightCmPID_lib(160, 188, 70, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 8000, 1, hardwareParameter);
 
 	intakeAction_1 = {0, 0, 0, 0, 1};
-	armAction_1 = {127, 0, 0, 1};
+	armAction_1 = {127, 0, 600, 1};
 	hookAction_1 = {100, false, 1};
-	goStraightCmPID_lib(52, 185, 70, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 8000, 1, hardwareParameter);
-	clawAction_1 = {0, false, 1};
-	turnDegreesPID_lib(150, ON_SPOT_TURN, 6, CLOCKWISE, 6, 0, 0.1, 1200, 1, hardwareParameter);
-	goStraightCmPID_lib_backVision(40, 150, 70, 1200);
+	goStraightCmPID_lib(50, 192, 70, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 2000, 1, hardwareParameter);
+	turnDegreesPID_lib(135, ON_SPOT_TURN, 70, CLOCKWISE, 6, 0, 0.1, 1200, 2, hardwareParameter);
+	goStraightCmPID_lib_backVision(50, 150, 127, 1200);
 	angle = get_robot_heading_lib(hardwareParameter);
-	goStraightCmPID_lib(40, angle, 70, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 700, 1, hardwareParameter);
+	goStraightCmPID_lib(40, angle, 90, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 700, 1, hardwareParameter);
 	hookAction_1 = {0, true, 1};
-
+	delay(40);
+	intakeAction_1 = {intake_speed, 0, 0, intake_speed, 1};
+	goStraightCmPID_lib(20, angle, 60, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 700, 1, hardwareParameter);
+	std::cout << "time: " << pros::millis() - start_time << std::endl;
+	goStraightCmPID_lib(60, angle, 127, MOVE_FORWARD, 1.8, 0, 2.5, 1, 0, 0, 500, 1, hardwareParameter);
+	goStraightCmPID_lib(60, angle, 127, MOVE_BACKWARD, 1.8, 0, 2.5, 1, 0, 0, 500, 1, hardwareParameter);
 }
 
 void width_test()
@@ -1138,7 +1141,7 @@ void width_test()
 
 void get_backDistance()
 {
-	while(true)
+	while (true)
 	{
 		int x = get_distance_back_vision(back_vision, DETECT_BLUE_GOAL_SIG, 10, 10, 20, 1000);
 		pros::lcd::print(4, "back blue distance: %d", x);
@@ -1200,8 +1203,8 @@ void autonomous()
 	// right_side();
 	// right_side2();
 	// right_midG();
-	right_wp();
-	// left_side();
+	// right_wp();
+	left_side();
 	// left_wp();
 	// get_backDistance();
 
