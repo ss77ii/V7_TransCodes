@@ -753,7 +753,7 @@ void auton_60s_skills_bridge_version()
 	right_back_motor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
 	right_mid_motor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
 
-	goStraightCmPID_lib(85, 180, 127, MOVE_FORWARD, 3, 0, 0, 10, 0, 0, 3000, 1, hardwareParameter);
+	goStraightCmPID_lib(70, 180, 127, MOVE_FORWARD, 3, 0, 0, 10, 0, 0, 3000, 1, hardwareParameter);
 	balance_bridge_PID_lib(127, -18, 15, 0, 0, 5000, 1, hardwareParameter);
 	goStraightCmPID_lib(1.5, 180, 127, MOVE_BACKWARD, 0, 0, 0, 3, 0, 0, 800, 1, hardwareParameter);
 
