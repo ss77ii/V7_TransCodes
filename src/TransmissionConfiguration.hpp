@@ -45,7 +45,7 @@ using namespace pros;
 
 #define EXTENDER_PORT 13
 
-#define INERTIAL_SENSOR_PORT 9
+#define INERTIAL_SENSOR_PORT 7
 
 #define FRONT_VISION_PORT 11
 #define BACK_VISION_PORT 15
@@ -94,7 +94,7 @@ using namespace pros;
 * ARM related definitions
 /*********************************************************/
 
-#define PRESS_BRIDGE 270
+#define PRESS_BRIDGE 300
 #define RELEASE_BRIDGE 400
 #define MAX_TOP 600
 #define CARRY_GOAL 150

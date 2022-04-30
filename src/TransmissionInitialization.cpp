@@ -78,7 +78,7 @@ void initialize()
 
 	front_vision.clear_led();
 	front_vision.set_wifi_mode(0); //disable wifi
-	front_vision.set_exposure(48);
+	front_vision.set_exposure(30);
    front_vision.set_signature(DETECT_RED_GOAL_SIG, &red_goal_sig);
    front_vision.set_signature(DETECT_BLUE_GOAL_SIG, &blue_goal_sig);
 	front_vision.set_signature(DETECT_YELLOW_GOAL_SIG, &yellow_goal_sig);

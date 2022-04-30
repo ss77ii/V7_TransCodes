@@ -55,12 +55,22 @@ void intake_control_fn(void* param)
 {
 	int buttonStateR2 = 0; // 0 = not pressed
 	int intakeState = 0; // 0 = retracted
-	int speed = 127;
+	int speed = 107;
 	int buttonStateXY = '0';
 	while(true)
     {
+		pros::lcd::print(6, "intake speed: %d", speed);
 		if (master.get_digital(DIGITAL_Y) == 1){
-			intake_motor.move(-127);
+			if(buttonStateR2 == 0){
+				speed = speed - 5;
+			}
+			buttonStateR2 = 1;
+		}
+		else if (master.get_digital(DIGITAL_X) == 1){
+			if(buttonStateR2 == 0){
+				speed = speed + 5;
+			}
+			buttonStateR2 = 1;
 		}
 		else if (master.get_digital(DIGITAL_R2) == 1)
         {
@@ -308,6 +318,7 @@ void opcontrol()
 		pros::lcd::print(0, "RF:%.1f-RM:%.1f-RB:%.1f", right_front_motor.get_temperature(), right_mid_motor.get_temperature(), right_back_motor.get_temperature());
 		pros::lcd::print(1, "LF:%.1f-LM:%.1f-LB:%.1f", left_front_motor.get_temperature(), left_mid_motor.get_temperature(), left_back_motor.get_temperature());
 		pros::lcd::print(2, "ARM:%.1f-INT:%.1f", arm_motor.get_temperature(), intake_motor.get_temperature());
+		pros::lcd::print(3, "Heading:%.1f", get_robot_heading_lib(hardwareParameter));
 		if (master.get_digital(DIGITAL_LEFT)){
 			arm.suspend();
 			drive.suspend();
