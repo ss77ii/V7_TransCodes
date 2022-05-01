@@ -367,7 +367,7 @@ void auton_60s_skills_bridge_version()
 	goStraightCmPID_lib(154, angle, 110, MOVE_FORWARD, 3.5, 0, 2.5, 0.3, 0, 5, 1800, 1, hardwareParameter); // 1650
 	angle = 115;
 	turnDegreesPID_lib(100, ON_SPOT_TURN, angle, COUNTER_CLOCKWISE, 6, 0, 25, 1000, 2, hardwareParameter);
-	goStraightCmPID_lib(40, angle, 127, MOVE_FORWARD, 2.5, 0, 2.5, 0.4, 0, 5, 1000, 1, hardwareParameter); // 1650
+	goStraightCmPID_lib(40, angle, 127, MOVE_FORWARD, 2.5, 0, 2.5, 0.4, 0, 5, 700, 1, hardwareParameter); // 1650
 	///////place the first yellow goal to the bridge
 	armAction_1 = {127, 0, PRESS_BRIDGE - 20, 1};
 	delay(300);
@@ -429,15 +429,15 @@ void auton_60s_skills_bridge_version()
 	turnDegreesPID_lib(60, ON_SPOT_TURN, 100, COUNTER_CLOCKWISE, 6, 0, 25, 1100, 2, hardwareParameter);
 	goStraightCmPID_lib(45, 60, 127, MOVE_FORWARD, 5, 0, 1, 0.5, 0, 10, 1000, 1, hardwareParameter);
 	armAction_1 = {127, 400, PRESS_BRIDGE + 30, 1};
-	goStraightCmPID_lib(45, 10, 127, MOVE_FORWARD, 6, 0, 1, 1, 0, 10, 1200, 1, hardwareParameter);
+	goStraightCmPID_lib(43, 10, 127, MOVE_FORWARD, 6, 0, 1, 1, 0, 10, 1200, 1, hardwareParameter);
 	armAction_1 = {127, 200, PRESS_BRIDGE, 1};
 	delay(200);
 	clawAction_1 = {0, false, 1};
 	delay(100);
 
 	//back away
-	goStraightCmPID_lib(58, 20, 127, MOVE_BACKWARD, 6, 0, 1, 1, 0, 10, 1200, 1, hardwareParameter);
-	turnDegreesPID_lib(315, ON_SPOT_TURN, 100, CLOCKWISE, 6, 0, 25, 1100, 2, hardwareParameter);
+	goStraightCmPID_lib(56, 20, 127, MOVE_BACKWARD, 6, 0, 1, 1, 0, 10, 1200, 1, hardwareParameter);
+	turnDegreesPID_lib(315, ON_SPOT_TURN, 100, CLOCKWISE, 6, 0, 27, 800, 1, hardwareParameter);
 	intakeAction_1 = {intake_speed, 0, 0, intake_speed, 1};
 	lcd::print(5, "Angle: %f", get_robot_heading_lib(hardwareParameter));
 
@@ -466,7 +466,6 @@ void auton_60s_skills_bridge_version()
 	distance = get_distance_back_vision(back_vision, DETECT_BLUE_GOAL_SIG, 10, 10, 60, 120);
 	goStraightCm_Back_Vision(distance + 10, 340, 80, DETECT_BLUE_GOAL_SIG, back_vision,
 							 0.5, 0, 1, 0.4, 0, 5, 0.3, 0, 5, 1200, 1, hardwareParameter);
-	delay(200);
 	hookAction_1 = {0, true, 1};
 	delay(50);
 	armAction_1 = {127, 0, 0, 1};
@@ -495,9 +494,9 @@ void auton_60s_skills_bridge_version()
 	
 	clawAction_1 = {0, true, 1};
 	delay(200);
-	armAction_1 = {127, 0, PRESS_BRIDGE + 70, 1};
+	armAction_1 = {127, 0, PRESS_BRIDGE + 60, 1};
 	turnDegreesPID_lib(118, ON_SPOT_TURN, 100, CLOCKWISE, 6, 0, 25, 1100, 2, hardwareParameter);
-	goStraightCmPID_lib(70, 118, 127, MOVE_FORWARD, 6, 0, 1, 1, 0, 10, 1700, 1, hardwareParameter);
+	goStraightCmPID_lib(72, 118, 127, MOVE_FORWARD, 6, 0, 1, 1, 0, 10, 1700, 1, hardwareParameter);
 	clawAction_1 = {0, false, 1};
 	delay(100);
 	
@@ -507,25 +506,25 @@ void auton_60s_skills_bridge_version()
 	intakeAction_1 = {0, 0, 0, 0, 1};
 	turnDegreesPID_lib(40, ON_SPOT_TURN, 100, CLOCKWISE, 6, 0, 25, 1100, 1, hardwareParameter);
 
-	goStraightCmPID_lib(100, 35, 127, MOVE_FORWARD, 5, 0, 2.5, 0.5, 0, 4, 1000, 1, hardwareParameter);
+	goStraightCmPID_lib(90, 35, 127, MOVE_FORWARD, 5, 0, 2.5, 0.5, 0, 4, 1000, 1, hardwareParameter);
 	turnDegreesPID_lib(-10, ON_SPOT_TURN, 100, CLOCKWISE, 6, 0, 25, 1100, 1, hardwareParameter);
 
 	//get second red goal
 	distance = get_distance_back_vision(back_vision, DETECT_RED_GOAL_SIG, 10, 10, 60, 120);
-	goStraightCm_Back_Vision(distance + 10, 340, 80, DETECT_RED_GOAL_SIG, back_vision,
+	goStraightCm_Back_Vision(distance + 8, 340, 80, DETECT_RED_GOAL_SIG, back_vision,
 							 0.5, 0, 1, 0.4, 0, 5, 0.3, 0, 5, 1300, 1, hardwareParameter);
-	delay(200);
+	delay(100);
 	hookAction_1 = {0, true, 1};
 
-	armAction_1 = {127, 0, 0, 1};
+	armAction_1 = {127, 0, 20, 1};
 	intakeAction_1 = {intake_speed, 0, 0, intake_speed, 1};
-	goStraightCmPID_lib(180, 275, 127, MOVE_FORWARD, 3, 0, 2.5, 0.5, 0, 4, 2000, 1, hardwareParameter);
+	goStraightCmPID_lib(180, 275, 127, MOVE_FORWARD, 2.3, 0, 2.5, 0.5, 0, 4, 2000, 1, hardwareParameter);
 	goStraightCm_Front_Vision_limit_switch(100, 270, 90, DETECT_RED_GOAL_SIG, front_vision,
 						  0.4, 0, 1.5, 0.3, 0, 10, 0.5, 0, 0, 1200, 1, hardwareParameter);
 	clawAction_1 = {0, true, 1};
 	delay(200);
 	armAction_1 = {127, 0, PRESS_BRIDGE + 80, 1};
-	goStraightCmPID_lib(15, 270, 127, MOVE_BACKWARD, 3, 0, 2.5, 0.5, 0, 4, 1000, 1, hardwareParameter);
+	goStraightCmPID_lib(13, 270, 127, MOVE_BACKWARD, 3, 0, 2.5, 0.5, 0, 4, 1000, 1, hardwareParameter);
 	goStraightCmPID_lib(70, 270, 80, MOVE_FORWARD, 3, 0, 2.5, 0.5, 0, 4, 1200, 1, hardwareParameter);
 	delay(100);
 	goStraightCmPID_lib(10, 270, 90, MOVE_BACKWARD, 3, 0, 2.5, 0.5, 0, 4, 500, 1, hardwareParameter);
@@ -536,10 +535,10 @@ void auton_60s_skills_bridge_version()
 	armAction_1 = {127, 0, 40, 1};
 	delay(400);
 //	waitForTouch();
-	goStraightCmPID_lib(80, 180, 127, MOVE_FORWARD, 1, 0, 0, 10, 0, 0, 3000, 1, hardwareParameter);
- 	balance_bridge_PID_lib(127, -18, 15, 0, 0, 5000, 1, hardwareParameter);
-	delay(100);
- 	goStraightCmPID_lib(3, 180, 20, MOVE_BACKWARD, 0, 0, 0, 1, 0, 0, 800, 1, hardwareParameter);
+	goStraightCmPID_lib(70, 180, 127, MOVE_FORWARD, 1, 0, 0, 10, 0, 0, 3000, 1, hardwareParameter);
+ 	balance_bridge_PID_lib(127, -19, 15, 0, 0, 5000, 1, hardwareParameter);
+	delay(50);
+ 	goStraightCmPID_lib(3, 180, 80, MOVE_BACKWARD, 0, 0, 0, 1, 0, 0, 200, 1, hardwareParameter);
 
 
 	waitForTouch();
