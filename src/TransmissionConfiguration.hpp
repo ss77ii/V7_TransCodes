@@ -43,9 +43,9 @@ using namespace pros;
 #define INTAKE_MOTOR_PORT 16
 #define ARM_MOTOR_PORT 19
 
-#define EXTENDER_PORT 13
+#define EXTENDER_PORT 7 // use to be 13, not anymore
 
-#define INERTIAL_SENSOR_PORT 7
+#define INERTIAL_SENSOR_PORT 13
 
 #define FRONT_VISION_PORT 11
 #define BACK_VISION_PORT 15
