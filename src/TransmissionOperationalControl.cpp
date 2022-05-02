@@ -8,18 +8,31 @@ int clawState = 0; // 0 = retracted
 
 void drive_control_fn(void* param)
 {
+	int drive_state = 0; //0 = coast, 1 = brake
 	int brake_button_pressed = 0;
 	while(true)
     {
 		if(master.get_digital(DIGITAL_LEFT) == 1)
 		{
 			if (brake_button_pressed == 0){
-				left_front_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
-				left_back_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
-				left_mid_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
-				right_front_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
-				right_back_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
-				right_mid_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
+				if (drive_state == 0){
+					left_front_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
+					left_back_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
+					left_mid_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
+					right_front_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
+					right_back_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
+					right_mid_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
+					drive_state = 1;
+				}
+				else {
+					left_front_motor.set_brake_mode(E_MOTOR_BRAKE_COAST);
+					left_back_motor.set_brake_mode(E_MOTOR_BRAKE_COAST);
+					left_mid_motor.set_brake_mode(E_MOTOR_BRAKE_COAST);
+					right_front_motor.set_brake_mode(E_MOTOR_BRAKE_COAST);
+					right_back_motor.set_brake_mode(E_MOTOR_BRAKE_COAST);
+					right_mid_motor.set_brake_mode(E_MOTOR_BRAKE_COAST);
+					drive_state = 0;
+				}
 				brake_button_pressed = 1;
 			}
 		}
