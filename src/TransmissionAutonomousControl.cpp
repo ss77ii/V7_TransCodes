@@ -376,7 +376,7 @@ void auton_60s_skills_bridge_version()
 
 	// ------------------------------------------------------------------------------------ //
 	//// part 1 take first blue goal
-	armAction_1 = {127, 201, 20, 1};
+	armAction_1 = {127, 201, 30, 1};
 	goStraightCmPID_lib(10, 180, 78, MOVE_BACKWARD, 0, 0, 0, 5, 0, 0, 500, 1, hardwareParameter);
 	hookAction_1 = {0, true, 1};
 	delay(hook_action_delay_time);
