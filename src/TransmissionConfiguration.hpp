@@ -43,7 +43,7 @@ using namespace pros;
 #define INTAKE_MOTOR_PORT 16
 #define ARM_MOTOR_PORT 19
 
-#define EXTENDER_PORT 7 // use to be 13, not anymore
+#define EXTENDER_PORT 14
 
 #define INERTIAL_SENSOR_PORT 13
 
@@ -57,8 +57,8 @@ using namespace pros;
 #define PNEUMATIC_BACK_PORT2 'E'
 #define PNEUMATIC_FRONT_PORT 'F'
 #define PNEUMATIC_TRANSMISSION_PORT 'D'
-#define PNEUMATIC_TOP_PORT 'K'
-#define TOUCH_SENSOR_PORT 'H'
+#define PNEUMATIC_TOP_PORT 'H'
+#define TOUCH_SENSOR_PORT 'K' // XD
 #define LIMIT_SWITCH_PORT 'G'
 
 ///////////////////////////////////////////
@@ -94,7 +94,7 @@ using namespace pros;
 * ARM related definitions
 /*********************************************************/
 
-#define PRESS_BRIDGE 270
+#define PRESS_BRIDGE 300
 #define RELEASE_BRIDGE 400
 #define MAX_TOP 600
 #define CARRY_GOAL 150
@@ -256,7 +256,6 @@ extern void hook_set_fn(void *param);
 extern void claw_set_fn(void *param);
 extern void intake_set_fn(void *param);
 extern void arm_set_fn(void *param);
-extern void transmission_con_fn(void *param);
 extern void background_command_fn(void *param);
 extern void breakAll();
 
@@ -267,7 +266,7 @@ extern pros::Task intake_set;
 extern pros::Task hook_set;
 extern pros::Task claw_set;
 extern pros::Task arm_set;
-extern pros::Task transmission_con;
+
 
 extern pros::Vision front_vision;
 extern pros::Vision back_vision;

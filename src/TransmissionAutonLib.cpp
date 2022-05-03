@@ -269,18 +269,13 @@ void arm_set_fn(void* param){
 	}
 }
 
-/***********************************************************************************
- TRANSMISSION TASK
- **********************************************************************************/
-
-    /**********************************************************************************************************************************
-      float degreeToDistance(float degreeRotated_lib)
-        return distance when driving motor rotates degrees specified by variable degreeRotated_lib.
-        its unit is centimeters;
-    **********************************************************************************************************************************/
-double degreeToDistanceCM(double degree_lib)
-{
-  return WHEEL_CIRCUMFERENCE_CM * degree_lib/360.0;
+/**********************************************************************************************************************************
+  float degreeToDistance(float degreeRotated_lib)
+    return distance when driving motor rotates degrees specified by variable degreeRotated_lib.
+    its unit is centimeters;
+**********************************************************************************************************************************/
+double degreeToDistanceCM(double degree_lib) {
+	return WHEEL_CIRCUMFERENCE_CM * degree_lib/360.0;
 }
 
 /**********************************************************************************************************************************

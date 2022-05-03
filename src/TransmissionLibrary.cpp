@@ -1481,7 +1481,7 @@ void balance_bridge_PID_lib(int maxPower, double target_pitch, double balance_KP
   int max_speed = maxPower;
   int count = 1;
 
-  double startingPitch = robot.inertialSensorLib.get_pitch();
+  double startingPitch = robot.inertialSensorLib.get_roll();
   double currentPitch = startingPitch;
   ;
   double previousPitch = startingPitch;
@@ -1504,7 +1504,7 @@ void balance_bridge_PID_lib(int maxPower, double target_pitch, double balance_KP
   while (true)
   {
     enterTime = pros::millis();
-    currentPitch = robot.inertialSensorLib.get_pitch();
+    currentPitch = robot.inertialSensorLib.get_roll();
     currentPitchError = target_pitch - currentPitch;
     if (currentPitchError == 0)
     {

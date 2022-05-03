@@ -8,7 +8,6 @@ pros::Task hook_set(hook_set_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STAC
 pros::Task claw_set(claw_set_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "claw set");
 pros::Task arm_set(arm_set_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "arm set");
 
-
 void display_vision_error(int line, std::string msg){
 	if(errno == 0){
 		pros::lcd::print(line, "n=%d  %s", errno, msg);
@@ -79,39 +78,34 @@ void initialize()
 
 	front_vision.clear_led();
 	front_vision.set_wifi_mode(0); //disable wifi
-	front_vision.set_exposure(48);
-    front_vision.set_signature(DETECT_RED_GOAL_SIG, &red_goal_sig);
-    front_vision.set_signature(DETECT_BLUE_GOAL_SIG, &blue_goal_sig);
+	front_vision.set_exposure(30);
+   front_vision.set_signature(DETECT_RED_GOAL_SIG, &red_goal_sig);
+   front_vision.set_signature(DETECT_BLUE_GOAL_SIG, &blue_goal_sig);
 	front_vision.set_signature(DETECT_YELLOW_GOAL_SIG, &yellow_goal_sig);
 
 	back_vision.clear_led();
 	back_vision.set_wifi_mode(0); //disable wifi
 	back_vision.set_exposure(30);
-  back_vision.set_signature(DETECT_RED_GOAL_SIG, &red_goal_sig);
-  back_vision.set_signature(DETECT_BLUE_GOAL_SIG, &blue_goal_sig);
+   back_vision.set_signature(DETECT_RED_GOAL_SIG, &red_goal_sig);
+   back_vision.set_signature(DETECT_BLUE_GOAL_SIG, &blue_goal_sig);
 	back_vision.set_signature(DETECT_YELLOW_GOAL_SIG, &yellow_goal_sig);
 
-	pros::lcd::initialize();
+	clawAction_1 = {0, true, 1};
+	hookAction_1 = {0, false, 1};
+	transmission_piston.set_value(false);
+	top_piston.set_value(false);
+
 	inertial_sensor.reset();
-  delay(3000);
-  pros::lcd::set_text(0, "         ----16868K----");
+	pros::lcd::initialize();
+	pros::delay(2500);
+	pros::lcd::set_text(0, "         ----16868K----");
+	pros::lcd::set_text(1, "Inertial sensor initializing......");
+	pros::delay(500);
 
-  /*
-	  pros::lcd::initialize();
-	  pros::lcd::register_btn0_cb(lcd_left_button);   //red or blue team selection button
-	  pros::lcd::register_btn1_cb(lcd_center_button); //square or rectangle selection button
-	  pros::lcd::register_btn2_cb(lcd_right_button);  //confirm button
-	  pros::delay(500);
-	  pros::lcd::set_text(0, "         ----16868A----");
-	  pros::lcd::set_text(1, "Inertial sensor initializing......");
-	  inertial_sensor.reset();
-	  pros::delay(3000);
-  */
 
-  //	pros::Task odometry(odometry_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "odometry");
-  //	pros::Task infoPrint(infoPrint_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "infoprint");
+//	pros::Task odometry(odometry_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "odometry");
+//	pros::Task infoPrint(infoPrint_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "infoprint");
 }
-
 
 void disabled() {}
 

@@ -8,8 +8,37 @@ int clawState = 0; // 0 = retracted
 
 void drive_control_fn(void* param)
 {
+	int drive_state = 0; //0 = coast, 1 = brake
+	int brake_button_pressed = 0;
 	while(true)
     {
+		if(master.get_digital(DIGITAL_LEFT) == 1)
+		{
+			if (brake_button_pressed == 0){
+				if (drive_state == 0){
+					left_front_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
+					left_back_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
+					left_mid_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
+					right_front_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
+					right_back_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
+					right_mid_motor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
+					drive_state = 1;
+				}
+				else {
+					left_front_motor.set_brake_mode(E_MOTOR_BRAKE_COAST);
+					left_back_motor.set_brake_mode(E_MOTOR_BRAKE_COAST);
+					left_mid_motor.set_brake_mode(E_MOTOR_BRAKE_COAST);
+					right_front_motor.set_brake_mode(E_MOTOR_BRAKE_COAST);
+					right_back_motor.set_brake_mode(E_MOTOR_BRAKE_COAST);
+					right_mid_motor.set_brake_mode(E_MOTOR_BRAKE_COAST);
+					drive_state = 0;
+				}
+				brake_button_pressed = 1;
+			}
+		}
+		else{
+			brake_button_pressed = 0;
+		}
 		if(master.get_digital(DIGITAL_UP) == 1)
         {
 			left_front_motor.move(127);
@@ -55,12 +84,22 @@ void intake_control_fn(void* param)
 {
 	int buttonStateR2 = 0; // 0 = not pressed
 	int intakeState = 0; // 0 = retracted
-	int speed = 127;
+	int speed = 107;
 	int buttonStateXY = '0';
 	while(true)
     {
+		pros::lcd::print(6, "intake speed: %d", speed);
 		if (master.get_digital(DIGITAL_Y) == 1){
-			intake_motor.move(-127);
+			if(buttonStateR2 == 0){
+				intake_motor.move(-speed);
+			}
+			buttonStateR2 = 1;
+		}
+		else if (master.get_digital(DIGITAL_X) == 1){
+			if(buttonStateR2 == 0){
+				intake_motor.move(60);
+			}
+			buttonStateR2 = 1;
 		}
 		else if (master.get_digital(DIGITAL_R2) == 1)
         {
@@ -109,6 +148,7 @@ void arm_control_fn(void* param)
 
 void claw_control_fn(void* param)
 {
+	int clawState = 0;
 	int buttonStateR1 = 0; // 0 = not pressed
 	int clear = 0; // 0 = active pushing
 	while(true)
@@ -139,6 +179,43 @@ void claw_control_fn(void* param)
 		pros::delay(10);
 	}
 }
+
+void shield_control_fn(void* param)
+{
+	int shieldState = 0;
+	int buttonStateR1 = 0; // 0 = not pressed
+	int clear = 0; // 0 = active pushing
+	while(true)
+    {
+		if (master.get_digital(DIGITAL_UP) == 1)
+        {
+			if(buttonStateR1 == 0)
+            {
+				if(shieldState == 0)
+                {
+					shieldState = 1;
+					top_piston.set_value(true);
+					clear = 1;
+				}
+				else if(shieldState == 1)
+                {
+					shieldState = 0;
+					clear = 0;
+					top_piston.set_value(false);
+				}
+			}
+			buttonStateR1 = 1;
+		}
+		else
+        {
+			buttonStateR1 = 0;
+		}
+		pros::delay(10);
+	}
+}
+
+
+
 
 void transmission_control_fn(void* param)
 {
@@ -301,31 +378,34 @@ void opcontrol()
 	pros::Task claw(claw_control_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "claw control");
 	pros::Task hook(hook_control_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "hook control");
 	pros::Task transmission(transmission_control_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "transmission control");
+	pros::Task shield(shield_control_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "shield control");
+	front_piston.set_value(false);
 
 	double angle;
 
 	while(true) {
 		pros::lcd::print(0, "RF:%.1f-RM:%.1f-RB:%.1f", right_front_motor.get_temperature(), right_mid_motor.get_temperature(), right_back_motor.get_temperature());
 		pros::lcd::print(1, "LF:%.1f-LM:%.1f-LB:%.1f", left_front_motor.get_temperature(), left_mid_motor.get_temperature(), left_back_motor.get_temperature());
-		pros::lcd::print(2, "ARM:%.1f", arm_motor.get_temperature());
-		if (master.get_digital(DIGITAL_LEFT)){
-			arm.suspend();
-			drive.suspend();
-			claw.suspend();
-			arm_motor.move_absolute(PRESS_BRIDGE + 10, 127);
-			delay(100);
-			angle = inertial_sensor.get_rotation();
-			front_piston.set_value(false);
-			clawState = 0;
-			delay(100);
-			goStraightCmPID_lib(5, angle, 80, MOVE_BACKWARD, 0, 0, 0, 5, 0, 0, 500, 1, hardwareParameter);
-			arm_motor.move_absolute(PRESS_BRIDGE - 100, 127);
-			delay(200);
-			claw.resume();
-			arm.resume();
-			drive.resume();
-			delay(100);
-		}
+		pros::lcd::print(2, "ARM:%.1f-INT:%.1f", arm_motor.get_temperature(), intake_motor.get_temperature());
+		pros::lcd::print(3, "Heading:%.1f", get_robot_heading_lib(hardwareParameter));
+		// if (master.get_digital(DIGITAL_LEFT)){
+		// 	arm.suspend();
+		// 	drive.suspend();
+		// 	claw.suspend();
+		// 	arm_motor.move_absolute(PRESS_BRIDGE + 10, 127);
+		// 	delay(100);
+		// 	angle = inertial_sensor.get_rotation();
+		// 	front_piston.set_value(false);
+		// 	clawState = 0;
+		// 	delay(100);
+		// 	goStraightCmPID_lib(5, angle, 80, MOVE_BACKWARD, 0, 0, 0, 5, 0, 0, 500, 1, hardwareParameter);
+		// 	arm_motor.move_absolute(PRESS_BRIDGE - 100, 127);
+		// 	delay(200);
+		// 	claw.resume();
+		// 	arm.resume();
+		// 	drive.resume();
+		// 	delay(100);
+		// }
 
 		pros::delay(20);
 	}
