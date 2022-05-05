@@ -50,16 +50,16 @@ using namespace pros;
 #define FRONT_VISION_PORT 11
 #define BACK_VISION_PORT 15
 
-#define Y_ENCODER_TOP_PORT 'B'
-#define Y_ENCODER_BOTTOM_PORT 'A'
+#define Y_ENCODER_TOP_PORT 'H'
+#define Y_ENCODER_BOTTOM_PORT 'G'
 
 #define PNEUMATIC_BACK_PORT1 'C'
 #define PNEUMATIC_BACK_PORT2 'E'
 #define PNEUMATIC_FRONT_PORT 'F'
 #define PNEUMATIC_TRANSMISSION_PORT 'D'
-#define PNEUMATIC_TOP_PORT 'H'
+#define PNEUMATIC_TOP_PORT 'B'
 #define TOUCH_SENSOR_PORT 'K' // XD
-#define LIMIT_SWITCH_PORT 'G'
+#define LIMIT_SWITCH_PORT 'A'
 
 ///////////////////////////////////////////
 #define MOVE_FORWARD 1

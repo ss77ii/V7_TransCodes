@@ -1512,12 +1512,12 @@ void autonomous()
 
 	front_piston.set_value(false);
 
-	// right_side();
+	right_side();
 	// right_side2();
 	// right_midG();
 	// right_wp();
 	// right_mid_wp();
-	left_side();
+	// left_side();
 	// left_wp();
 	// auton_60s_skills_bridge_version();
 	// get_backDistance();
